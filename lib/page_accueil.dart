@@ -1,3 +1,4 @@
+import 'package:crousgo/page_panier.dart';
 import 'package:flutter/material.dart';
 
 class PageAccueil extends StatefulWidget {
@@ -32,17 +33,35 @@ class PageAccueilState extends State<PageAccueil>
                     ),
                   ),
                 ),
-                SizedBox(
-                  width: 30.0,
-                  height: 30.0,
-                  child: Image.asset(
-                    'assets/panier.png',
+                InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const PagePanier()), // Remplacez PagePanier() par le nom de votre classe de la page panier
+                    );
+                  },
+                  child: SizedBox(
+                    width: 30.0,
+                    height: 30.0,
+                    child: Image.asset(
+                      'assets/panier.png',
+                    ),
                   ),
-                ),
+                )
               ],
             ),
           ),
-          // Ajoutez ici le reste du contenu de votre page d'accueil
+          const Column(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: Text("La Carte", textAlign: TextAlign.left, style: TextStyle(
+                  fontSize: 18.0,
+                  color: Colors.black,
+                ),),
+              ),
+            ],
+          ),
         ],
       ),
     );
