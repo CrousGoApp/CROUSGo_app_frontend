@@ -22,7 +22,7 @@ class PageAccueilState extends State<PageAccueil>
 
   Future<void> fetchData() async {
     final response =
-    await http.get(Uri.parse('http://172.27.218.247:8080/crousgo_app_backend/dishes'));
+    await http.get(Uri.parse('http://localhost:8080/crousgo_app_backend/dishes'));
 
     if (response.statusCode == 200) {
       setState(() {
