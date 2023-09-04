@@ -1,13 +1,17 @@
+import 'package:crousgo/page_panier.dart';
+import 'package:crousgo/page_produit.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:crousgo/page_panier.dart';
+
+// Importez votre classe PageProduit ici s'il n'a pas déjà été importé
+// import 'package:votre_projet/page_produit.dart';
 
 void main() {
   runApp(MaterialApp(
     home: const PageAccueil(),
     theme: ThemeData(
-      scaffoldBackgroundColor: Colors.grey, // Couleur de fond de l'application
+      scaffoldBackgroundColor: Colors.grey,
     ),
   ));
 }
@@ -51,11 +55,20 @@ class PageAccueilState extends State<PageAccueil>
           style: TextStyle(
             fontSize: 24.0,
             fontWeight: FontWeight.bold,
-            color: Color(0xFF06C167), // Nouvelle couleur du texte de l'AppBar
+            color: Color(0xFF06C167),
           ),
         ),
-        backgroundColor: Colors.black, // Couleur de fond de l'AppBar
-        centerTitle: true, // Centrer le titre
+        backgroundColor: Colors.black,
+        centerTitle: true,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context); // Pour retourner à la page précédente
+          },
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Color(0xFF06C167), // Couleur verte personnalisée
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -66,7 +79,7 @@ class PageAccueilState extends State<PageAccueil>
             },
             icon: const Icon(
               Icons.shopping_cart,
-              color: Color(0xFF06C167), // Nouvelle couleur de l'icône du panier
+              color: Color(0xFF06C167),
             ),
           ),
         ],
@@ -82,17 +95,17 @@ class PageAccueilState extends State<PageAccueil>
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
-                color: Colors.black, // Couleur du titre
+                color: Colors.black,
               ),
             ),
           ),
           Expanded(
             child: GridView.builder(
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, // Nombre de colonnes par ligne
-                crossAxisSpacing: 5.0, // Espacement horizontal entre les éléments
-                mainAxisSpacing: 5.0, // Espacement vertical entre les éléments
-                childAspectRatio: 0.7, // Ratio largeur/hauteur pour chaque boîte
+                crossAxisCount: 2,
+                crossAxisSpacing: 5.0,
+                mainAxisSpacing: 5.0,
+                childAspectRatio: 0.7,
               ),
               itemCount: jsonData.length,
               itemBuilder: (context, index) {
@@ -107,94 +120,101 @@ class PageAccueilState extends State<PageAccueil>
                       ? dishPrice
                       : double.parse(dishPrice.toString());
                 } catch (e) {
-                  // Gestion de l'erreur si la conversion échoue
-                  priceDouble = 0.0; // Vous pouvez définir une valeur par défaut
+                  priceDouble = 0.0;
                 }
 
-                return Container(
-                  margin: const EdgeInsets.symmetric(
-                    vertical: 5.0,
-                    horizontal: 5.0,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.white, // Couleur de fond de la boîte dish
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        decoration: const BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(10.0),
-                            topRight: Radius.circular(10.0),
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PageProduit(dish: dish),
+                      ),
+                    );
+                  },
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                      vertical: 5.0,
+                      horizontal: 5.0,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10.0),
+                              topRight: Radius.circular(10.0),
+                            ),
+                          ),
+                          child: Image.asset(
+                            'assets/burger.png',
+                            width: double.infinity,
+                            height: 150.0,
+                            fit: BoxFit.cover,
                           ),
                         ),
-                        child: Image.asset(
-                          'assets/burger.png', // Chemin vers votre image burger.png
-                          width: double.infinity, // Prend toute la largeur
-                          height: 150.0, // Ajustez la hauteur selon vos besoins
-                          fit: BoxFit.cover, // Ajustez la façon dont l'image est affichée
-                        ),
-                      ),
-                      const SizedBox(height: 15.0), // Espace plus grand
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 15.0, // Padding horizontal
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center, // Centrer le titre
-                          children: [
-                            Text(
-                              dishName,
-                              style: const TextStyle(
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF06C167), // Nouvelle couleur des titres
+                        const SizedBox(height: 15.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15.0,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                dishName,
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF06C167),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 15.0, // Padding horizontal
-                        ),
-                        child: SizedBox(
-                          height: 35.0, // Hauteur fixe de la description
-                          child: Text(
-                            dishDescription,
-                            style: const TextStyle(
-                              fontSize: 14.0,
-                            ),
+                            ],
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 15.0, // Padding horizontal
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              '\$${priceDouble.toStringAsFixed(2)}', // Format du prix avec deux décimales
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15.0,
+                          ),
+                          child: SizedBox(
+                            height: 35.0,
+                            child: Text(
+                              dishDescription,
                               style: const TextStyle(
                                 fontSize: 14.0,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.green, // Couleur du prix
                               ),
                             ),
-                            Checkbox(
-                              value: false, // Mettez ici la valeur de votre checkbox
-                              onChanged: (bool? value) {
-                                // Gérez ici l'état de la checkbox
-                              },
-                            ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ],
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15.0,
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '\$${priceDouble.toStringAsFixed(2)}',
+                                style: const TextStyle(
+                                  fontSize: 14.0,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green,
+                                ),
+                              ),
+                              Checkbox(
+                                value: false,
+                                onChanged: (bool? value) {},
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
