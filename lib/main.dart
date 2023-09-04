@@ -1,3 +1,4 @@
+import 'package:crousgo/page_auth.dart';
 import 'package:flutter/material.dart';
 import 'page_accueil.dart';
 void main() {
