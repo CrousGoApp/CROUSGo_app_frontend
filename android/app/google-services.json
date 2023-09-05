@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "348321573488",
+    "project_id": "croussgo",
+    "storage_bucket": "croussgo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348321573488:android:7c0b9a7f977d817894a2b5",
+        "android_client_info": {
+          "package_name": "com.imt.fw.crousgo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "348321573488-lumrqmirdi7gi1rlf4er4dlsl7vrsego.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbDMKE3JQCPT7RQ6knEYHVZARZr_w-mS4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "348321573488-lumrqmirdi7gi1rlf4er4dlsl7vrsego.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
