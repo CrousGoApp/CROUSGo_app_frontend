@@ -4,9 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-// Importez votre classe PageProduit ici s'il n'a pas déjà été importé
-// import 'package:votre_projet/page_produit.dart';
-
 void main() {
   runApp(MaterialApp(
     home: const PageAccueil(),
@@ -58,15 +55,15 @@ class PageAccueilState extends State<PageAccueil>
             color: Color(0xFF06C167),
           ),
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: const Color(0xFF06C167),
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
-            Navigator.pop(context); // Pour retourner à la page précédente
+            Navigator.pop(context);
           },
           icon: const Icon(
             Icons.arrow_back,
-            color: Color(0xFF06C167), // Couleur verte personnalisée
+            color: Colors.white,
           ),
         ),
         actions: [
@@ -79,7 +76,7 @@ class PageAccueilState extends State<PageAccueil>
             },
             icon: const Icon(
               Icons.shopping_cart,
-              color: Color(0xFF06C167),
+              color: Colors.white,
             ),
           ),
         ],
@@ -105,7 +102,7 @@ class PageAccueilState extends State<PageAccueil>
                 crossAxisCount: 2,
                 crossAxisSpacing: 5.0,
                 mainAxisSpacing: 5.0,
-                childAspectRatio: 0.7,
+                childAspectRatio: 0.65,
               ),
               itemCount: jsonData.length,
               itemBuilder: (context, index) {
@@ -133,13 +130,18 @@ class PageAccueilState extends State<PageAccueil>
                     );
                   },
                   child: Container(
-                    margin: const EdgeInsets.symmetric(
-                      vertical: 5.0,
-                      horizontal: 5.0,
-                    ),
+                    margin: const EdgeInsets.all(10.0),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: const Offset(0, 3),
+                        ),
+                      ],
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,36 +160,17 @@ class PageAccueilState extends State<PageAccueil>
                             fit: BoxFit.cover,
                           ),
                         ),
-                        const SizedBox(height: 15.0),
+                        const SizedBox(height: 10.0),
                         Padding(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 15.0,
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                dishName,
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF06C167),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 15.0,
-                          ),
-                          child: SizedBox(
-                            height: 35.0,
-                            child: Text(
-                              dishDescription,
-                              style: const TextStyle(
-                                fontSize: 14.0,
-                              ),
+                          child: Text(
+                            dishName,
+                            style: const TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF06C167),
                             ),
                           ),
                         ),
@@ -195,13 +178,24 @@ class PageAccueilState extends State<PageAccueil>
                           padding: const EdgeInsets.symmetric(
                             horizontal: 15.0,
                           ),
+                          child: Text(
+                            dishDescription,
+                            style: const TextStyle(
+                              fontSize: 14.0,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.all(15.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 '\$${priceDouble.toStringAsFixed(2)}',
                                 style: const TextStyle(
-                                  fontSize: 14.0,
+                                  fontSize: 16.0,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.green,
                                 ),
