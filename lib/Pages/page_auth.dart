@@ -7,6 +7,8 @@ class PageAuth extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  PageAuth({super.key});
+
   Future<void> _signIn(BuildContext context) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
@@ -15,7 +17,7 @@ class PageAuth extends StatelessWidget {
       );
       print("Utilisateur connecté : ${userCredential.user?.email}");
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => PageAccueil()));
+          context, MaterialPageRoute(builder: (context) => const PageAccueil()));
     } catch (e) {
       print("Erreur : $e");
     }
@@ -27,7 +29,7 @@ class PageAuth extends StatelessWidget {
       stream: _auth.authStateChanges(),
       builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
         if (snapshot.hasData && snapshot.data != null) {
-          return PageAccueil();
+          return const PageAccueil();
         }
         return Scaffold(
           body: Center(

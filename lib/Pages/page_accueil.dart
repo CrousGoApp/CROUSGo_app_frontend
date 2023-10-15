@@ -2,6 +2,7 @@ import 'package:crousgo/pages/page_panier.dart';
 import 'package:crousgo/pages/page_produit.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'ProfilePage.dart';
 import 'dart:convert';
 
 void main() {
@@ -31,9 +32,8 @@ class PageAccueilState extends State<PageAccueil>
   }
 
   Future<void> fetchData() async {
-    final response = await http
-        .get(Uri.parse('http://localhost:8080/crousgo_app_backend/dishes'));
-
+  try {
+    final response = await http.get(Uri.parse('http://localhost:8080/crousgo_app_backend/dishes'));
     if (response.statusCode == 200) {
       setState(() {
         jsonData = json.decode(response.body);
@@ -41,7 +41,11 @@ class PageAccueilState extends State<PageAccueil>
     } else {
       throw Exception('Failed to load data');
     }
+  } catch (e) {
+    // Gérez l'erreur ici, par exemple en imprimant le message d'erreur
+    print('Une erreur s\'est produite : $e');
   }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +82,13 @@ class PageAccueilState extends State<PageAccueil>
               Icons.shopping_cart,
               color: Colors.white,
             ),
+          ),
+          IconButton(
+            icon: Icon(Icons.account_circle),
+            onPressed: () {
+              // Naviguer vers la page de profil
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfilePage()));
+            },
           ),
         ],
       ),

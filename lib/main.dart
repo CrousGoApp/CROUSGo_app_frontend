@@ -1,6 +1,5 @@
 import 'package:crousgo/Pages/page_auth.dart';
 import 'package:flutter/material.dart';
-import 'pages/page_accueil.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -10,7 +9,7 @@ void main() async {
   await Firebase.initializeApp(
   options: DefaultFirebaseOptions.currentPlatform,
 );
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
