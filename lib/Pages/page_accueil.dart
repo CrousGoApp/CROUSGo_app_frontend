@@ -193,6 +193,7 @@ class PageAccueilState extends State<PageAccueil>
                             style: const TextStyle(
                               fontSize: 14.0,
                               color: Colors.black,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),
