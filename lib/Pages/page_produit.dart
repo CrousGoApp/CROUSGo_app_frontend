@@ -16,6 +16,7 @@ class PageProduit extends StatelessWidget {
     final dishName = dish['name'] as String;
     final dishDescription = dish['description'] as String;
     final dishPrice = dish['price'] as int;
+    final dishPicture = 'assets/${dish['picture']}';
 
     List<dynamic> categories = dish['categorie'] != null &&
         dish['categorie'] is List<dynamic>
@@ -76,8 +77,8 @@ class PageProduit extends StatelessWidget {
             Container(
               height: 300.0,
               decoration: BoxDecoration(
-                image: const DecorationImage(
-                  image: AssetImage('assets/burger.png'),
+                image: DecorationImage(
+                  image: AssetImage(dishPicture),
                   fit: BoxFit.cover,
                 ),
                 boxShadow: [
@@ -157,7 +158,7 @@ class PageProduit extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton( // Bouton flottant d'ajout au panier
         onPressed: () {
-          final item = Item(id: dish['id'].toString(), name: dishName, price: dishPrice);
+          final item = Item(id: dish['id'].toString(), name: dishName, price: dishPrice, picturename: dishPicture);
           cartModel.addItem(item);
           Navigator.push(
             context,

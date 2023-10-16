@@ -97,8 +97,8 @@ class _PagePanierState extends State<PagePanier> {
                           height: 100.0, // Hauteur de l'image
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12.0),
-                            image: const DecorationImage(
-                              image: AssetImage('assets/burger.png'),
+                            image: DecorationImage(
+                              image: AssetImage(item.picturename),
                               fit: BoxFit.cover,
                             ),
                           ),

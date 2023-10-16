@@ -214,9 +214,11 @@ class PageAccueilState extends State<PageAccueil>
                                   color: Colors.green,
                                 ),
                               ),
+                              
                               ElevatedButton(
                                 onPressed: () {
-                                  cartModel.addItem(Item(id: dish['id'].toString(), name: dishName, price: dishPrice));
+                                  final item = Item(id: dish['id'].toString(), name: dishName, price: dishPrice, picturename: dishPicture);
+                                  cartModel.addItem(item);
                                 },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF06C167),
