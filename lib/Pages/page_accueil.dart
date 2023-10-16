@@ -45,6 +45,7 @@ class PageAccueilState extends State<PageAccueil>
       throw Exception('Failed to load data');
     }
   } catch (e) {
+    // Gérez l'erreur ici, par exemple en imprimant le message d'erreur
     print('Une erreur s\'est produite : $e');
   }
 }
@@ -122,6 +123,7 @@ class PageAccueilState extends State<PageAccueil>
                 final dishName = dish['name'] as String;
                 final dishDescription = dish['description'] as String;
                 dynamic dishPrice = dish['price'];
+                final dishPicture = 'assets/${dish['picture']}';
                 double? priceDouble;
                 try {
                   priceDouble = dishPrice is double
@@ -165,7 +167,7 @@ class PageAccueilState extends State<PageAccueil>
                             ),
                           ),
                           child: Image.asset(
-                            'assets/burger.png',
+                            dishPicture,
                             width: double.infinity,
                             height: 150.0,
                             fit: BoxFit.cover,
