@@ -47,17 +47,22 @@ class ProfilePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (user?.photoURL != null)
-              CircleAvatar(
-                radius: 50,
-                backgroundImage: NetworkImage(user!.photoURL!),
+            if (user?.displayName != null)
+              Text(
+                'Nom: ${user!.displayName}',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             const SizedBox(height: 20),
-            if (user?.displayName != null)
-              Text('Nom: ${user!.displayName}'),
-            const SizedBox(height: 20),
             if (user?.email != null)
-              Text('Email: ${user!.email}'),
+              Text(
+                'Email: ${user!.email}',
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
+              ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
@@ -68,10 +73,20 @@ class ProfilePage extends StatelessWidget {
                   print("Erreur lors de la déconnexion: $e");
                 }
               },
-              child: const Text('Déconnexion'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF06C167),
+              ),
+              child: const Text(
+                'Déconnexion',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
             ),
           ],
         ),
+
       ),
     );
   }

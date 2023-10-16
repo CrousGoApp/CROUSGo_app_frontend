@@ -5,6 +5,9 @@ import 'package:http/http.dart' as http;
 import 'ProfilePage.dart';
 import 'dart:convert';
 
+import 'cart_model.dart';
+import 'item.dart';
+
 void main() {
   runApp(MaterialApp(
     home: const PageAccueil(),
@@ -42,6 +45,7 @@ class PageAccueilState extends State<PageAccueil>
       throw Exception('Failed to load data');
     }
   } catch (e) {
+    // Gérez l'erreur ici, par exemple en imprimant le message d'erreur
     print('Une erreur s\'est produite : $e');
   }
 }
@@ -119,8 +123,8 @@ class PageAccueilState extends State<PageAccueil>
                 final dishName = dish['name'] as String;
                 final dishDescription = dish['description'] as String;
                 dynamic dishPrice = dish['price'];
+                final dishPicture = 'assets/${dish['picture']}';
                 double? priceDouble;
-
                 try {
                   priceDouble = dishPrice is double
                       ? dishPrice
@@ -163,7 +167,7 @@ class PageAccueilState extends State<PageAccueil>
                             ),
                           ),
                           child: Image.asset(
-                            'assets/burger.png',
+                            dishPicture,
                             width: double.infinity,
                             height: 150.0,
                             fit: BoxFit.cover,
@@ -210,9 +214,21 @@ class PageAccueilState extends State<PageAccueil>
                                   color: Colors.green,
                                 ),
                               ),
-                              Checkbox(
-                                value: false,
-                                onChanged: (bool? value) {},
+                              ElevatedButton(
+                                onPressed: () {
+                                  cartModel.addItem(Item(id: dish['id'].toString(), name: dishName, price: dishPrice));
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF06C167),
+                                ),
+                                child: const Row(
+                                  children: [
+                                    Icon(
+                                      Icons.add_shopping_cart,
+                                      color: Colors.white,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
