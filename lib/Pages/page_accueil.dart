@@ -33,7 +33,7 @@ class PageAccueilState extends State<PageAccueil>
 
   Future<void> fetchData() async {
   try {
-    final response = await http.get(Uri.parse('http://localhost:8080/crousgo_app_backend/dishes'));
+    final response = await http.get(Uri.parse('http://10.0.2.2:8080/crousgo_app_backend/dishes'));
     if (response.statusCode == 200) {
       setState(() {
         jsonData = json.decode(response.body);
@@ -42,7 +42,6 @@ class PageAccueilState extends State<PageAccueil>
       throw Exception('Failed to load data');
     }
   } catch (e) {
-    // Gérez l'erreur ici, par exemple en imprimant le message d'erreur
     print('Une erreur s\'est produite : $e');
   }
 }

@@ -20,6 +20,24 @@ class PageAuth extends StatelessWidget {
           context, MaterialPageRoute(builder: (context) => const PageAccueil()));
     } catch (e) {
       print("Erreur : $e");
+      String errorMessage;
+      if (e is FirebaseAuthException) {
+        switch (e.code) {
+          case 'user-not-found':
+            errorMessage = "Nom d'utilisateur ou Mot de passe incorrect.";
+            break;
+          case 'wrong-password':
+            errorMessage = "Nom d'utilisateur ou Mot de passe incorrect.";
+            break;
+          default:
+            errorMessage = 'Une erreur est survenue lors de la connexion.';
+            break;
+        }
+      } else {
+        errorMessage = 'Une erreur est survenue lors de la connexion.';
+      }
+      final snackBar = SnackBar(content: Text(errorMessage));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
