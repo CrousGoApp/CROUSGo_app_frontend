@@ -1,12 +1,26 @@
+import 'dart:convert';
+
 import 'package:crousgo/pages/cart_model.dart';
 import 'package:crousgo/pages/page_accueil.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
+
 
 import 'ProfilePage.dart';
 
-class PagePanier extends StatelessWidget {
+class PagePanier extends StatefulWidget {
+  
   const PagePanier({Key? key}) : super(key: key);
+  @override
+  _PagePanierState createState() => _PagePanierState();
 
+  
+}
+
+class _PagePanierState extends State<PagePanier> {
+  List<dynamic> jsonData = [];
+  String userEmail= "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,9 +151,29 @@ class PagePanier extends StatelessWidget {
           ),
           const SizedBox(height: 20.0), // Espacement en bas
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               // Ajoutez ici la logique pour passer la commande
               // Vous pouvez afficher un dialogue de confirmation ou passer à la page de paiement.
+
+              //je récupère l'email du user
+              final FirebaseAuth _auth = FirebaseAuth.instance;
+              final User? user = _auth.currentUser;
+
+              if (user != null && user.email != null) {
+                String userEmail = user.email!;
+                List<String> dishIds = cartModel.cart.map((item) => item.id).toList();
+                int? selectedClassroom = await _selectClassroom(context);
+              if (selectedClassroom != null) {
+                print("La classe sélectionnée est : $selectedClassroom");
+                // Ici, vous pouvez ajouter la logique pour passer la commande avec la classe sélectionnée
+              } else {
+                print("Aucune classe n'a été sélectionnée.");
+              }
+                String formattedData = formatOrderData(userEmail, dishIds, selectedClassroom);
+                print(formattedData);
+              } else {
+                print("Aucun utilisateur n'est connecté.");
+              }
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF06C167), // Couleur du bouton
@@ -162,4 +196,54 @@ class PagePanier extends StatelessWidget {
       ),
     );
   }
+  Future<int?> _selectClassroom(BuildContext context) async {
+  await fetchData(); // Récupérez les données
+
+  return await showDialog<int?>(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text('Choisissez une classe'),
+          children: jsonData.map<Widget>((classroom) {
+            return SimpleDialogOption(
+              onPressed: () {
+                Navigator.pop(context, classroom['id']); // Supposons que chaque objet "classroom" ait un attribut "name"
+              },
+              child: Text(classroom['name']),
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
+
+  
+  Future<void> fetchData() async {
+    try {
+      final response = await http.get(Uri.parse('http://10.0.2.2:8080/crousgo_app_backend/classrooms'));
+      if (response.statusCode == 200) {
+        setState(() {
+          jsonData = json.decode(response.body);
+        });
+      } else {
+        throw Exception('Failed to load data');
+      }
+    } catch (e) {
+      print('Une erreur s\'est produite : $e');
+    }
+  }
+
+  String formatOrderData(String userEmail, List<String> dishIds, int? classroomId) {
+  Map<String, dynamic> orderData = {
+    "user_mail": userEmail,
+    "dishIds": dishIds,
+    "classroomId": classroomId
+  };
+
+  return jsonEncode(orderData);
 }
+
+}
+
+
+
