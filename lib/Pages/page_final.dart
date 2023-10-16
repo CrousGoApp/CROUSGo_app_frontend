@@ -1,3 +1,4 @@
+import 'package:crousgo/Pages/ProfilePage.dart';
 import 'package:crousgo/pages/page_accueil.dart';
 import 'package:crousgo/pages/page_panier.dart';
 import 'package:flutter/material.dart';
@@ -14,90 +15,77 @@ class PageFinalState extends State<PageFinal>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
-          Container(
-            color: const Color(0xFFFDF7EF), // Couleur de la bannière
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const PageAccueil()), // Remplacez PagePanier() par le nom de votre classe de la page panier
-                    );
-                  },
-                  child: SizedBox(
-                    width: 30.0,
-                    height: 30.0,
-                    child: Image.asset(
-                      'assets/fleche_gauche.png',
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  width: 100.0, // Ajustez cette largeur selon vos besoins
-                  child: Text(
-                    'CrousGO',
-                    style: TextStyle(
-                      fontSize: 24.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const PagePanier()), // Remplacez PagePanier() par le nom de votre classe de la page panier
-                    );
-                  },
-                  child: SizedBox(
-                    width: 30.0,
-                    height: 30.0,
-                    child: Image.asset(
-                      'assets/panier.png',
-                    ),
-                  ),
-                )
-              ],
+      appBar: AppBar(
+        title: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const PageAccueil()),
+            );
+          },
+          child: const Text(
+            'CrousGO',
+            style: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
             ),
           ),
-          Column(
-            children: [
-              SizedBox(
-                width: 350.0,
-                height: 350.0,
-                child: Image.asset(
-                  'assets/commande_fin.png',
-                ),
-              ),
-              const Text(
-                "Commande envoyée !",
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const Text(
-                "Elle vous attendra à la fin de votre cours !",
-                style: TextStyle(
-                  fontSize: 18.0,
-                ),
-              ),
-              const Text(
-                "Solde CrousGO restant : --- €",
-                style: TextStyle(
-                  fontSize: 15.0,
-                ),
-              ),
-            ],
-          )
-
+        ),
+        backgroundColor: const Color(0xFF06C167),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PagePanier()),
+              );
+            },
+            icon: const Icon(
+              Icons.shopping_cart,
+              color: Colors.white,
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            onPressed: () {
+              // Naviguer vers la page de profil
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfilePage()));
+            },
+          ),
         ],
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: 350.0,
+              height: 350.0,
+              child: Image.asset('assets/commande_fin.png'),
+            ),
+            const Text(
+              "Commande envoyée !",
+              style: TextStyle(
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const Text(
+              "Elle vous attendra à la fin de votre cours !",
+              style: TextStyle(
+                fontSize: 18.0,
+              ),
+            ),
+            const Text(
+              "Solde CrousGO restant : --- €",
+              style: TextStyle(
+                fontSize: 15.0,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:crousgo/Pages/page_final.dart';
 import 'package:crousgo/pages/cart_model.dart';
 import 'package:crousgo/pages/page_accueil.dart';
 import 'package:flutter/material.dart';
@@ -182,6 +183,7 @@ class _PagePanierState extends State<PagePanier> {
 
                   if (response.statusCode == 200) {
                     print('Commande passée avec succès');
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => PageFinal()));
                   } else {
                     print('Erreur lors de la passation de la commande');
                   }
@@ -218,11 +220,11 @@ class _PagePanierState extends State<PagePanier> {
       context: context,
       builder: (BuildContext context) {
         return SimpleDialog(
-          title: Text('Choisissez une classe'),
+          title: const Text('Choisissez une classe'),
           children: jsonData.map<Widget>((classroom) {
             return SimpleDialogOption(
               onPressed: () {
-                Navigator.pop(context, classroom['id']); // Supposons que chaque objet "classroom" ait un attribut "name"
+                Navigator.pop(context, classroom['id']);
               },
               child: Text(classroom['name']),
             );
