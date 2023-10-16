@@ -163,17 +163,32 @@ class _PagePanierState extends State<PagePanier> {
                 String userEmail = user.email!;
                 List<String> dishIds = cartModel.cart.map((item) => item.id).toList();
                 int? selectedClassroom = await _selectClassroom(context);
-              if (selectedClassroom != null) {
-                print("La classe sélectionnée est : $selectedClassroom");
-                // Ici, vous pouvez ajouter la logique pour passer la commande avec la classe sélectionnée
-              } else {
-                print("Aucune classe n'a été sélectionnée.");
-              }
-                String formattedData = formatOrderData(userEmail, dishIds, selectedClassroom);
-                print(formattedData);
+                if (selectedClassroom != null) {
+                  print("La classe sélectionnée est : $selectedClassroom");
+                  // Ici, vous pouvez ajouter la logique pour passer la commande avec la classe sélectionnée
+                } else {
+                  print("Aucune classe n'a été sélectionnée.");
+                }
+                  String formattedData = formatOrderData(userEmail, dishIds, selectedClassroom);
+                  print(formattedData);
+                  // Effectuer une requête POST
+                  final response = await http.post(
+                    Uri.parse('http://10.0.2.2:8080/crousgo_app_backend/orders'), // Remplacez par l'URL de votre API
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: formattedData,
+                  );
+
+                  if (response.statusCode == 200) {
+                    print('Commande passée avec succès');
+                  } else {
+                    print('Erreur lors de la passation de la commande');
+                  }
               } else {
                 print("Aucun utilisateur n'est connecté.");
               }
+              
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF06C167), // Couleur du bouton
