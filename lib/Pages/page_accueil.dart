@@ -5,6 +5,9 @@ import 'package:http/http.dart' as http;
 import 'ProfilePage.dart';
 import 'dart:convert';
 
+import 'cart_model.dart';
+import 'item.dart';
+
 void main() {
   runApp(MaterialApp(
     home: const PageAccueil(),
@@ -120,7 +123,6 @@ class PageAccueilState extends State<PageAccueil>
                 final dishDescription = dish['description'] as String;
                 dynamic dishPrice = dish['price'];
                 double? priceDouble;
-
                 try {
                   priceDouble = dishPrice is double
                       ? dishPrice
@@ -210,9 +212,21 @@ class PageAccueilState extends State<PageAccueil>
                                   color: Colors.green,
                                 ),
                               ),
-                              Checkbox(
-                                value: false,
-                                onChanged: (bool? value) {},
+                              ElevatedButton(
+                                onPressed: () {
+                                  cartModel.addItem(Item(id: dish['id'].toString(), name: dishName, price: dishPrice));
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFF06C167),
+                                ),
+                                child: const Row(
+                                  children: [
+                                    Icon(
+                                      Icons.add_shopping_cart,
+                                      color: Colors.white,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),

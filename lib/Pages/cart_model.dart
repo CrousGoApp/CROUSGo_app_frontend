@@ -12,6 +12,10 @@ class CartModel {
   void removeFromCart(Item item) {
     _cart.remove(item);
   }
+
+  bool isInCart(Item item) {
+    return _cart.contains(item);
+  }
 }
 
 final cartModel = CartModel();
