@@ -82,7 +82,7 @@ class PageAccueilState extends State<PageAccueil>
             ),
           ),
           IconButton(
-            icon: Icon(Icons.account_circle),
+            icon: const Icon(Icons.account_circle),
             onPressed: () {
               // Naviguer vers la page de profil
               Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfilePage()));

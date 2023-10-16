@@ -4,6 +4,8 @@ import 'package:crousgo/pages/page_accueil.dart';
 import 'package:crousgo/pages/page_panier.dart';
 import 'package:flutter/material.dart';
 
+import 'ProfilePage.dart';
+
 class PageProduit extends StatelessWidget {
   final Map<String, dynamic> dish;
 
@@ -39,21 +41,12 @@ class PageProduit extends StatelessWidget {
             style: TextStyle(
               fontSize: 24.0,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF06C167),
+              color: Colors.white,
             ),
           ),
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: const Color(0xFF06C167),
         centerTitle: true,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            color: Color(0xFF06C167),
-          ),
-        ),
         actions: [
           IconButton(
             onPressed: () {
@@ -64,8 +57,15 @@ class PageProduit extends StatelessWidget {
             },
             icon: const Icon(
               Icons.shopping_cart,
-              color: Color(0xFF06C167),
+              color: Colors.white,
             ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            onPressed: () {
+              // Naviguer vers la page de profil
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfilePage()));
+            },
           ),
         ],
       ),

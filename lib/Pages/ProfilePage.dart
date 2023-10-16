@@ -1,3 +1,5 @@
+import 'package:crousgo/Pages/page_accueil.dart';
+import 'package:crousgo/Pages/page_panier.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -8,7 +10,38 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profil'),
+        title: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const PageAccueil()),
+            );
+          },
+          child: const Text(
+            'CrousGO',
+            style: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        backgroundColor: const Color(0xFF06C167),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PagePanier()),
+              );
+            },
+            icon: const Icon(
+              Icons.shopping_cart,
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
       body: Center(
         child: Column(
@@ -19,13 +52,13 @@ class ProfilePage extends StatelessWidget {
                 radius: 50,
                 backgroundImage: NetworkImage(user!.photoURL!),
               ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             if (user?.displayName != null)
               Text('Nom: ${user!.displayName}'),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             if (user?.email != null)
               Text('Email: ${user!.email}'),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 try {
@@ -35,7 +68,7 @@ class ProfilePage extends StatelessWidget {
                   print("Erreur lors de la déconnexion: $e");
                 }
               },
-              child: Text('Déconnexion'),
+              child: const Text('Déconnexion'),
             ),
           ],
         ),
