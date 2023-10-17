@@ -1,27 +1,22 @@
 import 'dart:convert';
-
 import 'package:crousgo/Pages/page_final.dart';
-import 'package:crousgo/pages/cart_model.dart';
-import 'package:crousgo/pages/page_accueil.dart';
+import 'package:crousgo/Pages/cart_model.dart';
+import 'package:crousgo/Pages/page_accueil.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
-
-
-import 'ProfilePage.dart';
+import 'package:crousgo/Pages/ProfilePage.dart';
 
 class PagePanier extends StatefulWidget {
-  
   const PagePanier({Key? key}) : super(key: key);
   @override
-  _PagePanierState createState() => _PagePanierState();
-
-  
+  _PagePanierState createState() => _PagePanierState(); 
 }
 
 class _PagePanierState extends State<PagePanier> {
   List<dynamic> jsonData = [];
   String userEmail= "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,15 +82,15 @@ class _PagePanierState extends State<PagePanier> {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Card(
-                    elevation: 3.0, // Élévation de la carte
+                    elevation: 3.0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12.0), // Coins arrondis
+                      borderRadius: BorderRadius.circular(12.0),
                     ),
                     child: Row(
                       children: [
                         Container(
-                          width: 100.0, // Largeur de l'image
-                          height: 100.0, // Hauteur de l'image
+                          width: 100.0,
+                          height: 100.0,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(12.0),
                             image: DecorationImage(
@@ -104,7 +99,7 @@ class _PagePanierState extends State<PagePanier> {
                             ),
                           ),
                         ),
-                        const SizedBox(width: 10.0), // Espacement
+                        const SizedBox(width: 10.0),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +112,7 @@ class _PagePanierState extends State<PagePanier> {
                                 ),
                               ),
                               Text(
-                                '\$${item.price.toString()}',
+                                '\$${item.price.toString()} x ${item.quantity}',
                                 style: const TextStyle(
                                   color: Colors.green,
                                   fontSize: 16.0,
@@ -127,20 +122,30 @@ class _PagePanierState extends State<PagePanier> {
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(
-                            Icons.delete,
-                            color: Colors.red,
-                          ),
+                          icon: const Icon(Icons.add),
                           onPressed: () {
-                            // Supprimez l'élément du panier
+                            setState(() {
+                              item.quantity += 1;
+                            });
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.remove),
+                          onPressed: () {
+                            setState(() {
+                              if (item.quantity > 1) {
+                                item.quantity -= 1;
+                              } else {
+                                cartModel.removeFromCart(item);
+                              }
+                            });
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red),
+                          onPressed: () {
                             cartModel.removeFromCart(item);
-                            // Rafraîchissez l'interface utilisateur en reconstruisant la page
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const PagePanier(),
-                              ),
-                            );
+                            setState(() {});
                           },
                         ),
                       ],
@@ -151,6 +156,15 @@ class _PagePanierState extends State<PagePanier> {
             ),
           ),
           const SizedBox(height: 20.0), // Espacement en bas
+          Text(
+            'Total: \$${calculateTotal().toStringAsFixed(2)}',
+            style: TextStyle(
+              fontSize: 20.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+          ),
+
           ElevatedButton(
             onPressed: () async {
               //je récupère l'email du user
@@ -249,14 +263,18 @@ class _PagePanierState extends State<PagePanier> {
   }
 
   String formatOrderData(String userEmail, List<String> dishIds, int? classroomId) {
-  Map<String, dynamic> orderData = {
-    "user_mail": userEmail,
-    "dishIds": dishIds,
-    "classroomId": classroomId
-  };
+    Map<String, dynamic> orderData = {
+      "user_mail": userEmail,
+      "dishIds": dishIds,
+      "classroomId": classroomId
+    };
 
-  return jsonEncode(orderData);
-}
+    return jsonEncode(orderData);
+  }
+  double calculateTotal() {
+    return cartModel.cart.fold(0.0, (total, item) => total + (item.price * item.quantity));
+  }
+
 
 }
 

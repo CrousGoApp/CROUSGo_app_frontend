@@ -1,12 +1,12 @@
-import 'package:crousgo/pages/page_panier.dart';
-import 'package:crousgo/pages/page_produit.dart';
+import 'package:crousgo/Pages/page_panier.dart';
+import 'package:crousgo/Pages/page_produit.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'ProfilePage.dart';
 import 'dart:convert';
 
-import 'package:crousgo/pages/cart_model.dart';
-import 'package:crousgo/pages/item.dart';
+import 'package:crousgo/Pages/cart_model.dart';
+import 'package:crousgo/Pages/item.dart';
 
 void main() {
   runApp(MaterialApp(

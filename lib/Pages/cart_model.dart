@@ -1,4 +1,4 @@
-import 'item.dart';
+import 'package:crousgo/Pages/item.dart';
 
 class CartModel {
   final List<Item> _cart = [];
@@ -6,8 +6,17 @@ class CartModel {
   List<Item> get cart => _cart;
 
   void addItem(Item item) {
-    _cart.add(item);
+  bool itemExists = cart.any((i) => i.id == item.id);
+
+  if (itemExists) {
+    var existingItem = cart.firstWhere((i) => i.id == item.id);
+    existingItem.quantity += 1;
+  } else {
+    cart.add(item);
   }
+
+}
+
 
   void removeFromCart(Item item) {
     _cart.remove(item);
