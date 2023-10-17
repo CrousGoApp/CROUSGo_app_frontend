@@ -64,6 +64,50 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
             const SizedBox(height: 20),
+            // Affichage du solde du portefeuille (faux pour le moment, vous devrez intégrer avec votre source de vérité)
+            Text(
+              'Solde du Wallet: 100€', // Remplacez par le vrai solde du wallet
+              style: const TextStyle(
+                fontSize: 16,
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                _showRechargeDialog(context);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF06C167),
+              ),
+              child: const Text(
+                'Recharger le Wallet',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                // Naviguer vers la page d'édition du profil
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EditProfilePage(user: user)),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color(0xFF06C167),
+              ),
+              child: const Text(
+                'Modifier le profil',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 try {
@@ -86,7 +130,69 @@ class ProfilePage extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
 
+  void _showRechargeDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Recharger le Wallet'),
+          content: TextField(
+            decoration: InputDecoration(hintText: "Entrez le montant"),
+            keyboardType: TextInputType.number,
+            // ... Autres propriétés pour personnaliser ce champ
+          ),
+          actions: [
+            TextButton(
+              child: Text('Annuler'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Recharger'),
+              onPressed: () {
+                // Traitez le paiement et mettez à jour le solde du wallet ici
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+}
+
+// Ceci est une maquette de la page EditProfile. 
+// Vous devrez ajouter des champs et des logiques appropriés pour la modification du profil.
+class EditProfilePage extends StatelessWidget {
+  final User? user;
+
+  EditProfilePage({required this.user});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Modifier le Profil'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            // Ajoutez des champs pour modifier le nom, l'e-mail, etc.
+            // ...
+            ElevatedButton(
+              onPressed: () {
+                // Sauvegardez les modifications ici
+              },
+              child: Text('Sauvegarder'),
+            )
+          ],
+        ),
       ),
     );
   }
