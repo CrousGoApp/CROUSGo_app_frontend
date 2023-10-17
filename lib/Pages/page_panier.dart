@@ -153,20 +153,16 @@ class _PagePanierState extends State<PagePanier> {
           const SizedBox(height: 20.0), // Espacement en bas
           ElevatedButton(
             onPressed: () async {
-              // Ajoutez ici la logique pour passer la commande
-              // Vous pouvez afficher un dialogue de confirmation ou passer à la page de paiement.
-
               //je récupère l'email du user
               final FirebaseAuth _auth = FirebaseAuth.instance;
               final User? user = _auth.currentUser;
 
-              if (user != null && user.email != null) {
+              if (user != null && user.email != null && cartModel.cart.isNotEmpty) {
                 String userEmail = user.email!;
                 List<String> dishIds = cartModel.cart.map((item) => item.id).toList();
                 int? selectedClassroom = await _selectClassroom(context);
                 if (selectedClassroom != null) {
                   print("La classe sélectionnée est : $selectedClassroom");
-                  // Ici, vous pouvez ajouter la logique pour passer la commande avec la classe sélectionnée
                 } else {
                   print("Aucune classe n'a été sélectionnée.");
                 }
@@ -174,7 +170,7 @@ class _PagePanierState extends State<PagePanier> {
                   print(formattedData);
                   // Effectuer une requête POST
                   final response = await http.post(
-                    Uri.parse('http://10.0.2.2:8080/crousgo_app_backend/orders'), // Remplacez par l'URL de votre API
+                    Uri.parse('http://10.0.2.2:8080/crousgo_app_backend/orders'),
                     headers: {
                       'Content-Type': 'application/json',
                     },
@@ -184,11 +180,12 @@ class _PagePanierState extends State<PagePanier> {
                   if (response.statusCode == 200) {
                     print('Commande passée avec succès');
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => PageFinal()));
+                    cartModel.cart.clear();
                   } else {
                     print('Erreur lors de la passation de la commande');
                   }
               } else {
-                print("Aucun utilisateur n'est connecté.");
+                print("Aucun utilisateur n'est connecté ou panier vide.");
               }
               
             },
