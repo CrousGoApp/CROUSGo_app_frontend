@@ -23,7 +23,6 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
       if (response.statusCode == 200) {
         setState(() {
           orders = json.decode(response.body);
-          print(orders);
         });
       } else {
         throw Exception('Failed to load data');
