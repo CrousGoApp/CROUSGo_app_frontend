@@ -1,3 +1,4 @@
+import 'package:crousgo/Pages/page_OrderHistory.dart';
 import 'package:crousgo/Pages/page_accueil.dart';
 import 'package:crousgo/Pages/page_panier.dart';
 import 'package:flutter/material.dart';
@@ -128,6 +129,16 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
             ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => OrderHistoryPage()),
+                );
+              },
+              child: Text('View Order History'),
+            )
+
           ],
         ),
       ),
