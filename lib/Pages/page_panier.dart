@@ -173,14 +173,17 @@ class _PagePanierState extends State<PagePanier> {
 
               if (user != null && user.email != null && cartModel.cart.isNotEmpty) {
                 String userEmail = user.email!;
-                List<String> dishIds = cartModel.cart.map((item) => item.id).toList();
+                List<Map<String, dynamic>> dishes = cartModel.cart.map((item) => {
+                  'id': item.id,
+                  'quantity': item.quantity
+                }).toList();
                 int? selectedClassroom = await _selectClassroom(context);
                 if (selectedClassroom != null) {
                   print("La classe sélectionnée est : $selectedClassroom");
                 } else {
                   print("Aucune classe n'a été sélectionnée.");
                 }
-                  String formattedData = formatOrderData(userEmail, dishIds, selectedClassroom);
+                  String formattedData = formatOrderData(userEmail, dishes, selectedClassroom);
                   print(formattedData);
                   // Effectuer une requête POST
                   final response = await http.post(
@@ -262,14 +265,14 @@ class _PagePanierState extends State<PagePanier> {
     }
   }
 
-  String formatOrderData(String userEmail, List<String> dishIds, int? classroomId) {
-    Map<String, dynamic> orderData = {
-      "user_mail": userEmail,
-      "dishIds": dishIds,
-      "classroomId": classroomId
-    };
+  String formatOrderData(String userEmail, List<Map<String, dynamic>> dishes, int? classroomId) {
+  Map<String, dynamic> orderData = {
+    "user_mail": userEmail,
+    "dishes": dishes,
+    "classroomId": classroomId
+  };
 
-    return jsonEncode(orderData);
+  return jsonEncode(orderData);
   }
   double calculateTotal() {
     return cartModel.cart.fold(0.0, (total, item) => total + (item.price * item.quantity));
