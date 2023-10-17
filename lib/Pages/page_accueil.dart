@@ -5,8 +5,8 @@ import 'package:http/http.dart' as http;
 import 'ProfilePage.dart';
 import 'dart:convert';
 
-import 'cart_model.dart';
-import 'item.dart';
+import 'package:crousgo/pages/cart_model.dart';
+import 'package:crousgo/pages/item.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -219,7 +219,7 @@ class PageAccueilState extends State<PageAccueil>
                                 onPressed: () {
                                   final item = Item(id: dish['id'].toString(), name: dishName, price: dishPrice, picturename: dishPicture);
                                   cartModel.addItem(item);
-                                },
+                                  },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: const Color(0xFF06C167),
                                 ),
