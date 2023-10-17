@@ -173,11 +173,12 @@ class _PagePanierState extends State<PagePanier> {
                     Uri.parse('http://10.0.2.2:8080/crousgo_app_backend/orders'),
                     headers: {
                       'Content-Type': 'application/json',
+                      'Accept': 'application/json',
                     },
                     body: formattedData,
                   );
 
-                  if (response.statusCode == 200) {
+                  if (response.statusCode == 201) {
                     print('Commande passée avec succès');
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => PageFinal()));
                     cartModel.cart.clear();
