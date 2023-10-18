@@ -27,6 +27,8 @@ class PageAccueil extends StatefulWidget {
 class PageAccueilState extends State<PageAccueil>
     with SingleTickerProviderStateMixin {
   List<dynamic> jsonData = [];
+  String? selectedCategory;
+
 
   @override
   void initState() {
@@ -40,6 +42,7 @@ class PageAccueilState extends State<PageAccueil>
       if (response.statusCode == 200) {
         setState(() {
           jsonData = json.decode(response.body);
+          print(jsonData);
         });
       } else {
         throw Exception('Failed to load data');
@@ -109,8 +112,28 @@ class PageAccueilState extends State<PageAccueil>
               ),
             ),
           ),
+          DropdownButton<String>(
+            hint: Text("Sélectionnez une catégorie"),
+            value: selectedCategory,
+            items: [
+              'Toutes les catégories','Vegan', 'Vegetarian', 'Meat', 'Fish', 'Pasta', 'Rice', 'Salad', 'Sandwich', 'Soup', 'Burger'
+            ].map((String category) {
+              return DropdownMenuItem<String>(
+                value: category,
+                child: Text(category),
+              );
+            }).toList(),
+            onChanged: (newValue) {
+              setState(() {
+                selectedCategory = newValue;
+              });
+            },
+          ),
+
           Expanded(
+            
             child: GridView.builder(
+              
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 5.0,
@@ -120,6 +143,19 @@ class PageAccueilState extends State<PageAccueil>
               itemCount: jsonData.length,
               itemBuilder: (context, index) {
                 final dish = jsonData[index];
+                  if (selectedCategory != null && selectedCategory != "Toutes les catégories") {
+                  bool matchesCategory = false;
+                  for (var cat in dish['categorie']) {
+                    if (cat['name'] == selectedCategory) {
+                      matchesCategory = true;
+                      break;
+                    }
+                  }
+                  if (!matchesCategory) {
+                    return Container();  // Retourne un conteneur vide si le plat ne correspond pas à la catégorie sélectionnée
+                  }
+                }
+                
                 final dishName = dish['name'] as String;
                 final dishDescription = dish['description'] as String;
                 dynamic dishPrice = dish['price'];
