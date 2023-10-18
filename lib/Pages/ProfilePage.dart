@@ -1,12 +1,39 @@
+import 'dart:convert';
+
 import 'package:crousgo/Pages/page_OrderHistory.dart';
 import 'package:crousgo/Pages/page_accueil.dart';
 import 'package:crousgo/Pages/page_panier.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart' as http;
 
-class ProfilePage extends StatelessWidget {
+
+class ProfilePage extends StatefulWidget {
+    _ProfilePageState createState() => _ProfilePageState();
+
+}
+class _ProfilePageState extends State<ProfilePage> {
   final User? user = FirebaseAuth.instance.currentUser;
+  int? walletBalance;
 
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserDetails();
+  }
+  
+  _fetchUserDetails() async {
+    // Remplacez par l'URL de votre API
+    final response = await http.get(Uri.parse('http://10.0.2.2:8080/crousgo_app_backend/users/email/${user!.email}'));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      setState(() {
+        walletBalance = data['wallet'];
+      });
+    } else {
+      print("Erreur lors de la récupération des détails de l'utilisateur");
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +94,7 @@ class ProfilePage extends StatelessWidget {
             const SizedBox(height: 20),
             // Affichage du solde du portefeuille (faux pour le moment, vous devrez intégrer avec votre source de vérité)
             Text(
-              'Solde du Wallet: 100€', // Remplacez par le vrai solde du wallet
+              'Solde du Wallet: \$$walletBalance', // Remplacez par le vrai solde du wallet
               style: const TextStyle(
                 fontSize: 16,
               ),
@@ -176,9 +203,6 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
-
-// Ceci est une maquette de la page EditProfile. 
-// Vous devrez ajouter des champs et des logiques appropriés pour la modification du profil.
 class EditProfilePage extends StatelessWidget {
   final User? user;
 
