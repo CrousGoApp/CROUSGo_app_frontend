@@ -1,5 +1,8 @@
 import 'dart:convert';
 
+import 'package:crousgo/pages/ProfilePage.dart';
+import 'package:crousgo/pages/page_accueil.dart';
+import 'package:crousgo/pages/page_panier.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -10,7 +13,7 @@ class OrderHistoryPage extends StatefulWidget {
 
 class _OrderHistoryPageState extends State<OrderHistoryPage> {
   List<dynamic> orders = [];  // Stock la réponse de l'API
-  
+
   @override
   void initState() {
     super.initState();
@@ -40,49 +43,99 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
     return total;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Historique des commandes'),
+        title: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const PageAccueil()),
+            );
+          },
+          child: const Text(
+            'CrousGO',
+            style: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        backgroundColor: const Color(0xFF06C167),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PagePanier()),
+              );
+            },
+            icon: const Icon(
+              Icons.shopping_cart,
+              color: Colors.white,
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            onPressed: () {
+              // Naviguer vers la page de profil
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ProfilePage()));
+            },
+          ),
+        ],
       ),
-      body: ListView.builder(
-        itemCount: orders.length,
-        itemBuilder: (context, index) {
-          final order = orders[index];
-          return Card(
-            margin: EdgeInsets.all(8.0),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Commande ID: ${order["id"]}'),
-                  //Text('Email: ${order["user_mail"]}'),
-                  Text('Salle de classe: ${order["classroom"]["name"]}'),
-                  Text('Total: \$${calculateOrderTotal(order["orderDishes"]).toStringAsFixed(2)}'),
-                  SizedBox(height: 10),
-                  ...order["orderDishes"].map<Widget>((orderDish) {
-                    return ListTile(
-                       // Assurez-vous d'avoir une URL complète pour l'image
-                      title: Text(orderDish["dish"]["name"]),
-                      subtitle: Text(orderDish["dish"]["description"]),
-                      trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Quantité: ${orderDish["quantity"]}'),
-                          Text('Prix: \$${orderDish["dish"]["price"]}'),
-                        ],
-                      ),
-                    );
-                  }).toList(),
-                  
-                ],
+      body: Column(
+        children: <Widget>[
+          const Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text(
+              'Historique des commandes',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          );
-        },
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: orders.length,
+              itemBuilder: (context, index) {
+                final order = orders[index];
+                return Card(
+                  margin: const EdgeInsets.all(8.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Commande ID: ${order["id"]}'),
+                        Text('Salle de classe: ${order["classroom"]["name"]}'),
+                        Text('Total: \$${calculateOrderTotal(order["orderDishes"]).toStringAsFixed(2)}'),
+                        const SizedBox(height: 10),
+                        ...order["orderDishes"].map<Widget>((orderDish) {
+                          return ListTile(
+                            title: Text(orderDish["dish"]["name"]),
+                            subtitle: Text(orderDish["dish"]["description"]),
+                            trailing: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('Quantité: ${orderDish["quantity"]}'),
+                                Text('Prix: \$${orderDish["dish"]["price"]}'),
+                              ],
+                            ),
+                          );
+                        }).toList(),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

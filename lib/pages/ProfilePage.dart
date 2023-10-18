@@ -75,28 +75,29 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (user?.displayName != null)
-              Text(
-                'Nom: ${user!.displayName}',
-                style: const TextStyle(
-                  fontSize: 18,
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Profile',
+                style: TextStyle(
+                  fontSize: 20.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-            const SizedBox(height: 20),
+            ),
             if (user?.email != null)
               Text(
                 'Email: ${user!.email}',
                 style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: 18, // Augmenter la taille de la police
                 ),
               ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10), // Réduire l'espacement entre les éléments
             // Affichage du solde du portefeuille (faux pour le moment, vous devrez intégrer avec votre source de vérité)
             Text(
               'Solde du Wallet: \$$walletBalance', // Remplacez par le vrai solde du wallet
               style: const TextStyle(
-                fontSize: 16,
+                fontSize: 18, // Augmenter la taille de la police
               ),
             ),
             const SizedBox(height: 20),
@@ -105,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 _showRechargeDialog(context);
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF06C167),
+                backgroundColor: const Color(0xFF06C167), // Couleur d'UberEats
               ),
               child: const Text(
                 'Recharger le Wallet',
@@ -115,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10), // Réduire l'espacement entre les éléments
             ElevatedButton(
               onPressed: () {
                 // Naviguer vers la page d'édition du profil
@@ -125,7 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF06C167),
+                backgroundColor: const Color(0xFF06C167), // Couleur d'UberEats
               ),
               child: const Text(
                 'Modifier le profil',
@@ -135,7 +136,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10), // Réduire l'espacement entre les éléments
             ElevatedButton(
               onPressed: () async {
                 try {
@@ -146,7 +147,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 }
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFF06C167),
+                backgroundColor: const Color(0xFF06C167), // Couleur d'UberEats
               ),
               child: const Text(
                 'Déconnexion',
@@ -156,6 +157,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -163,9 +165,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   MaterialPageRoute(builder: (context) => OrderHistoryPage()),
                 );
               },
-              child: Text('View Order History'),
-            )
-
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF06C167), // Couleur d'UberEats
+              ),
+              child: const Text(
+                'Historique des commandes',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           ],
         ),
       ),
@@ -177,21 +187,21 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Recharger le Wallet'),
-          content: TextField(
+          title: const Text('Recharger le Wallet'),
+          content: const TextField(
             decoration: InputDecoration(hintText: "Entrez le montant"),
             keyboardType: TextInputType.number,
             // ... Autres propriétés pour personnaliser ce champ
           ),
           actions: [
             TextButton(
-              child: Text('Annuler'),
+              child: const Text('Annuler'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: Text('Recharger'),
+              child: const Text('Recharger'),
               onPressed: () {
                 // Traitez le paiement et mettez à jour le solde du wallet ici
                 Navigator.of(context).pop();
@@ -212,20 +222,82 @@ class EditProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Modifier le Profil'),
+        title: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const PageAccueil()),
+            );
+          },
+          child: const Text(
+            'CrousGO',
+            style: TextStyle(
+              fontSize: 24.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        backgroundColor: const Color(0xFF06C167),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PagePanier()),
+              );
+            },
+            icon: const Icon(
+              Icons.shopping_cart,
+              color: Colors.white,
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.account_circle),
+            onPressed: () {
+              // Naviguer vers la page de profil
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => ProfilePage()));
+            },
+          ),
+        ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: Center(
         child: Column(
-          children: [
-            // Ajoutez des champs pour modifier le nom, l'e-mail, etc.
-            // ...
-            ElevatedButton(
-              onPressed: () {
-                // Sauvegardez les modifications ici
-              },
-              child: Text('Sauvegarder'),
-            )
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Text(
+              'Modifier le Profil',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 20.0),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: [
+                  // Ajoutez des champs pour modifier le nom, l'e-mail, etc.
+                  // ...
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF06C167), // Couleur d'UberEats
+                      textStyle: const TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: () {
+                      // Sauvegardez les modifications ici
+                    },
+                    child: const Text('Sauvegarder'),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
