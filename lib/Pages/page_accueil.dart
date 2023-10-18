@@ -28,6 +28,8 @@ class PageAccueilState extends State<PageAccueil>
     with SingleTickerProviderStateMixin {
   List<dynamic> jsonData = [];
   String? selectedCategory;
+  String? searchQuery;
+
 
 
   @override
@@ -112,6 +114,21 @@ class PageAccueilState extends State<PageAccueil>
               ),
             ),
           ),
+          TextField(
+            decoration: InputDecoration(
+              labelText: "Rechercher un plat",
+              prefixIcon: Icon(Icons.search),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+            onChanged: (value) {
+              setState(() {
+                searchQuery = value;
+              });
+            },
+          ),
+
           DropdownButton<String>(
             hint: Text("Sélectionnez une catégorie"),
             value: selectedCategory,
@@ -143,6 +160,9 @@ class PageAccueilState extends State<PageAccueil>
               itemCount: jsonData.length,
               itemBuilder: (context, index) {
                 final dish = jsonData[index];
+                  if (searchQuery != null && searchQuery!.isNotEmpty && !dish['name'].toLowerCase().contains(searchQuery!.toLowerCase())) {
+                    return Container();  // Retournez un conteneur vide si le nom du plat ne contient pas la requête de recherche
+                  }
                   if (selectedCategory != null && selectedCategory != "Toutes les catégories") {
                   bool matchesCategory = false;
                   for (var cat in dish['categorie']) {
