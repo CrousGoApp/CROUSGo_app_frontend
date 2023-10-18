@@ -9,8 +9,7 @@ class OrderHistoryPage extends StatefulWidget {
 }
 
 class _OrderHistoryPageState extends State<OrderHistoryPage> {
-  // TODO: Remplacez ceci par la logique d'appel API pour obtenir les données de l'historique des commandes
-  List<dynamic> orders = [];  // Exemple de réponse de l'API
+  List<dynamic> orders = [];  // Stock la réponse de l'API
   
   @override
   void initState() {
@@ -28,7 +27,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
         throw Exception('Failed to load data');
       }
     } catch (e) {
-      // Gérez l'erreur ici, par exemple en imprimant le message d'erreur
+      // Gestion de l'erreur
       print('Une erreur s\'est produite : $e');
     }
   }
