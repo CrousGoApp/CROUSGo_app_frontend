@@ -85,7 +85,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            if (user?.email != null)
+             if (user?.email != null)
               Text(
                 'Email: ${user!.email}',
                 style: const TextStyle(

@@ -2,6 +2,12 @@ import 'package:crousgo/pages/ProfilePage.dart';
 import 'package:crousgo/pages/page_accueil.dart';
 import 'package:crousgo/pages/page_panier.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+
 
 class PageFinal extends StatefulWidget {
   const PageFinal({Key? key}) : super(key: key);
@@ -11,7 +17,30 @@ class PageFinal extends StatefulWidget {
 }
 
 class PageFinalState extends State<PageFinal>
+
     with SingleTickerProviderStateMixin {
+      final User? user = FirebaseAuth.instance.currentUser;
+
+      int? walletBalance;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserDetails();
+  }
+  
+  _fetchUserDetails() async {
+    // Remplacez par l'URL de votre API
+    final response = await http.get(Uri.parse('http://10.0.2.2:8080/crousgo_app_backend/users/email/${user!.email}'));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      setState(() {
+        walletBalance = data['wallet'];
+      });
+    } else {
+      print("Erreur lors de la récupération des détails de l'utilisateur");
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,8 +107,9 @@ class PageFinalState extends State<PageFinal>
                 fontSize: 18.0,
               ),
             ),
-            const Text(
-              "Solde CrousGO restant : --- €",
+            
+            Text(
+              "Solde CrousGO restant : \$$walletBalance",
               style: TextStyle(
                 fontSize: 15.0,
               ),

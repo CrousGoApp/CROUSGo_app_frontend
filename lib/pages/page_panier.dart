@@ -199,8 +199,13 @@ class _PagePanierState extends State<PagePanier> {
                     print('Commande passée avec succès');
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => PageFinal()));
                     cartModel.cart.clear();
-                  } else {
-                    print('Erreur lors de la passation de la commande');
+                    
+                  } else if(response.statusCode == 400){
+                    final snackBar = SnackBar(content: Text("Solde insufisant"));
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                  }else {
+                    print('Erreur lors de la passation de la commande: $response');
                   }
               } else {
                 print("Aucun utilisateur n'est connecté ou panier vide.");
