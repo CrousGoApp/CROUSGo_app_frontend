@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:crousgo/Pages/page_OrderHistory.dart';
-import 'package:crousgo/Pages/page_accueil.dart';
-import 'package:crousgo/Pages/page_panier.dart';
+import 'package:crousgo/pages/page_OrderHistory.dart';
+import 'package:crousgo/pages/page_accueil.dart';
+import 'package:crousgo/pages/page_panier.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;

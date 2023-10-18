@@ -1,4 +1,4 @@
-import 'package:crousgo/Pages/page_accueil.dart';
+import 'package:crousgo/pages/page_accueil.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

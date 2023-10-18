@@ -1,4 +1,4 @@
-import 'package:crousgo/Pages/item.dart';
+import 'package:crousgo/pages/item.dart';
 
 class CartModel {
   final List<Item> _cart = [];

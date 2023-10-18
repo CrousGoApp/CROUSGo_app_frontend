@@ -1,11 +1,11 @@
 import 'dart:convert';
-import 'package:crousgo/Pages/page_final.dart';
-import 'package:crousgo/Pages/cart_model.dart';
-import 'package:crousgo/Pages/page_accueil.dart';
+import 'package:crousgo/pages/page_final.dart';
+import 'package:crousgo/pages/cart_model.dart';
+import 'package:crousgo/pages/page_accueil.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
-import 'package:crousgo/Pages/ProfilePage.dart';
+import 'package:crousgo/pages/ProfilePage.dart';
 
 class PagePanier extends StatefulWidget {
   const PagePanier({Key? key}) : super(key: key);
