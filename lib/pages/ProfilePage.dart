@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:crousgo/pages/EditProfilePage.dart';
-import 'package:crousgo/pages/ProfilePage.dart';
 import 'package:crousgo/pages/page_OrderHistory.dart';
 import 'package:crousgo/pages/page_accueil.dart';
 import 'package:crousgo/pages/page_panier.dart';
@@ -17,6 +16,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final User? user = FirebaseAuth.instance.currentUser;
   int? walletBalance;
+  final walletController = TextEditingController();
+
 
   @override
   void initState() {
@@ -25,7 +26,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
   
   _fetchUserDetails() async {
-    // Remplacez par l'URL de votre API
     final response = await http.get(Uri.parse('http://10.0.2.2:8080/crousgo_app_backend/users/email/${user!.email}'));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
@@ -95,11 +95,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             const SizedBox(height: 10), // Réduire l'espacement entre les éléments
-            // Affichage du solde du portefeuille (faux pour le moment, vous devrez intégrer avec votre source de vérité)
-            Text(
-              'Solde du Wallet: \$$walletBalance', // Remplacez par le vrai solde du wallet
+              Text(
+              'Solde du Wallet: \$$walletBalance', 
               style: const TextStyle(
-                fontSize: 18, // Augmenter la taille de la police
+                fontSize: 18, 
               ),
             ),
             const SizedBox(height: 20),
@@ -190,10 +189,10 @@ class _ProfilePageState extends State<ProfilePage> {
       builder: (context) {
         return AlertDialog(
           title: const Text('Recharger le Wallet'),
-          content: const TextField(
+          content:  TextField(
+            controller: walletController,
             decoration: InputDecoration(hintText: "Entrez le montant"),
             keyboardType: TextInputType.number,
-            // ... Autres propriétés pour personnaliser ce champ
           ),
           actions: [
             TextButton(
@@ -204,10 +203,44 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             TextButton(
               child: const Text('Recharger'),
-              onPressed: () {
-                // Traitez le paiement et mettez à jour le solde du wallet ici
+              onPressed: () async {
+              int? rechargeAmount = int.tryParse(walletController.text); // Convertit la valeur en entier
+              if (rechargeAmount != null) {
+                // Création du JSON avec cette valeur
+                String formattedData = json.encode({
+                  'wallet': rechargeAmount
+                });
+
+                // Envoyez cet objet JSON dans la requête PUT.
+                final response = await http.put(
+                  Uri.parse('http://10.0.2.2:8080/crousgo_app_backend/users/email/${user!.email}'),
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                  },
+                  body: formattedData,
+                );
+
+                if (response.statusCode == 200) { 
+                  print('Solde mis à jour avec succès');
+                  final snackBar = SnackBar(content: Text("Solde mis à jour avec succes"));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  _fetchUserDetails(); 
+                } else {
+                  print('Erreur lors de la mise à jour du solde');
+                  final snackBar = SnackBar(content: Text("Problème avec la mise à jour du solde"));
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+
+                
                 Navigator.of(context).pop();
-              },
+              } else {
+                print("Montant invalide");
+                final snackBar = SnackBar(content: Text("Veuillez entrer un montant valide"));
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              }
+              
+            },
             ),
           ],
         );
