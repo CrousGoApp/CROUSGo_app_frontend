@@ -108,6 +108,7 @@ class PageFinalState extends State<PageFinal>
               ),
             ),
             
+
             Text(
               "Solde CrousGO restant : \$$walletBalance",
               style: TextStyle(

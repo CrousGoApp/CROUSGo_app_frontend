@@ -15,8 +15,6 @@ class OrderTrackingPage extends StatefulWidget {
 class _OrderTrackingPageState extends State<OrderTrackingPage> {
   Map<String, dynamic>? orderData;
   Timer? _timer;
-  
-
 
   @override
   void initState() {
@@ -43,6 +41,29 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
       }
     } catch (e) {
       print('Une erreur s\'est produite : $e');
+    }
+  }
+
+  Future<void> _cancelOrder() async {
+    try {
+      final response = await http.put(
+        Uri.parse('http://10.0.2.2:8080/crousgo_app_backend/orders/${widget.orderId}'),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({"state": 5}),
+      );
+      if (response.statusCode == 200) {
+        fetchData(); // Rafraîchir les données après l'annulation
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Commande annulée. Le montant a été crédité sur votre solde.")),
+        );
+      } else {
+        throw Exception('Failed to cancel order');
+      }
+    } catch (e) {
+      print('Une erreur s\'est produite lors de l\'annulation de la commande : $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erreur lors de l'annulation de la commande.")),
+      );
     }
   }
 
@@ -87,6 +108,11 @@ class _OrderTrackingPageState extends State<OrderTrackingPage> {
                     }).toList(),
                   ],
                 ),
+              ),
+            if (orderData != null && (orderData!["state"] == 1 || orderData!["state"] == 2))
+              ElevatedButton(
+                onPressed: _cancelOrder,
+                child: Text("Annuler la commande"),
               ),
           ],
         ),

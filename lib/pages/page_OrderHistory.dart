@@ -35,7 +35,22 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
       print('Une erreur s\'est produite : $e');
     }
   }
-
+  String getOrderState(int state) {
+    switch (state) {
+      case 1:
+        return "Commande confirmée";
+      case 2:
+        return "Préparation";
+      case 3:
+        return "Livraison";
+      case 4:
+        return "Terminé";
+      case 5:
+        return "Annulé";
+      default:
+        return "Inconnu";
+    }
+  }
   double calculateOrderTotal(List<dynamic> orderDishes) {
     double total = 0.0;
     for (var orderDish in orderDishes) {
@@ -104,7 +119,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
             child: ListView.builder(
               itemCount: orders.length,
               itemBuilder: (context, index) {
-                final order = orders[index];
+                final order = orders.reversed.toList()[index];
                 return GestureDetector(  
                   onTap: () {
                     Navigator.push(
@@ -124,6 +139,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
                           Text('Commande ID: ${order["id"]}'),
                           Text('Salle de classe: ${order["classroom"]["name"]}'),
                           Text('Total: \$${calculateOrderTotal(order["orderDishes"]).toStringAsFixed(2)}'),
+                          Text('Etat: ${getOrderState(order["state"])}'),
                           const SizedBox(height: 10),
                           ...order["orderDishes"].map<Widget>((orderDish) {
                             return ListTile(

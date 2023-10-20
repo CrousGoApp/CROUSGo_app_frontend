@@ -1,17 +1,23 @@
-D'accord, je vais utiliser les informations que j'ai obtenues précédemment du dépôt GitHub pour compléter le README. Voici une version mise à jour :
-
----
-
 # CROUSGo_app_frontend
 
 ## Description du Projet
-CROUSGo_app_frontend est une application destinée à [description brève de l'application, par exemple, "fournir des informations sur les services CROUS disponibles"]. Elle vise à faciliter l'accès aux services CROUS pour les étudiants.
+CROUSGo_app_frontend est une application destinée à livrer des repas crous directement dans les etablissements. Elle vise à faciliter l'accès aux services CROUS pour les étudiants.
 
 ## Fonctionnalités
 - Connexion utilisateur avec les identifiants suivants :
   - Email : test2@test.com
   - Mot de passe : test123456
-- [Autres fonctionnalités à ajouter]
+
+  
+- Teste la fonctionnalité suivis de commande:
+  - Passez une commande via l'application
+  - Rendez vous dans profile > Historique > cliquer sur la commande
+  - Avec postman, envoyer une requette PUT à http://localhost:8080/crousgo_app_backend/orders/[OrderID] avec le body suivant:
+  {
+    "state": "1"
+  }
+  Modifier l'etat avec un entier allant de 1 à 4 et observer l'etat de la commande evoluer sur l'application
+
 
 ## Captures d'écran
 [À ajouter : images ou liens vers des captures d'écran de l'application]
