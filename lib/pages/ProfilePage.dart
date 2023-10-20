@@ -130,8 +130,25 @@ _fetchUserDetails() async {
                 ),
               ),
             ),
-            const SizedBox(height: 10), // Réduire l'espacement entre les éléments
-            const SizedBox(height: 10), // Réduire l'espacement entre les éléments
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => OrderHistoryPage()),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFF06C167), 
+              ),
+              child: const Text(
+                'Historique des commandes',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
             ElevatedButton(
               onPressed: () async {
                 try {
@@ -149,25 +166,6 @@ _fetchUserDetails() async {
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 18,
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => OrderHistoryPage()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF06C167), 
-              ),
-              child: const Text(
-                'Historique des commandes',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
