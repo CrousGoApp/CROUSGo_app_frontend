@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:crousgo/pages/EditProfilePage.dart';
 import 'package:crousgo/pages/page_OrderHistory.dart';
 import 'package:crousgo/pages/page_accueil.dart';
 import 'package:crousgo/pages/page_panier.dart';
@@ -17,6 +16,9 @@ class _ProfilePageState extends State<ProfilePage> {
   final User? user = FirebaseAuth.instance.currentUser;
   int? walletBalance;
   final walletController = TextEditingController();
+  String? firstname;
+  String? lastname;
+
 
 
   @override
@@ -25,17 +27,20 @@ class _ProfilePageState extends State<ProfilePage> {
     _fetchUserDetails();
   }
   
-  _fetchUserDetails() async {
+_fetchUserDetails() async {
     final response = await http.get(Uri.parse('http://10.0.2.2:8080/crousgo_app_backend/users/email/${user!.email}'));
     if (response.statusCode == 200) {
       final data = json.decode(response.body);
       setState(() {
         walletBalance = data['wallet'];
+        firstname = data['firstname'];
+        lastname = data['lastname'];
       });
     } else {
       print("Erreur lors de la récupération des détails de l'utilisateur");
     }
-  }
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,6 +92,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
+            if (firstname != null && lastname != null)
+              Text(
+                'Nom: $firstname $lastname',
+                style: const TextStyle(
+                  fontSize: 18,
+                ),
+              ),
+
              if (user?.email != null)
               Text(
                 'Email: ${user!.email}',
@@ -118,25 +131,6 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             const SizedBox(height: 10), // Réduire l'espacement entre les éléments
-            ElevatedButton(
-              onPressed: () {
-                // Naviguer vers la page d'édition du profil
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => EditProfilePage(user: user)),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF06C167), // Couleur d'UberEats
-              ),
-              child: const Text(
-                'Modifier le profil',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                ),
-              ),
-            ),
             const SizedBox(height: 10), // Réduire l'espacement entre les éléments
             ElevatedButton(
               onPressed: () async {
