@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:crousgo/pages/ProfilePage.dart';
 import 'package:crousgo/pages/page_accueil.dart';
+import 'package:crousgo/pages/page_orderTracking.dart';
 import 'package:crousgo/pages/page_panier.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -104,31 +105,41 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
               itemCount: orders.length,
               itemBuilder: (context, index) {
                 final order = orders[index];
-                return Card(
-                  margin: const EdgeInsets.all(8.0),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Commande ID: ${order["id"]}'),
-                        Text('Salle de classe: ${order["classroom"]["name"]}'),
-                        Text('Total: \$${calculateOrderTotal(order["orderDishes"]).toStringAsFixed(2)}'),
-                        const SizedBox(height: 10),
-                        ...order["orderDishes"].map<Widget>((orderDish) {
-                          return ListTile(
-                            title: Text(orderDish["dish"]["name"]),
-                            subtitle: Text(orderDish["dish"]["description"]),
-                            trailing: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text('Quantité: ${orderDish["quantity"]}'),
-                                Text('Prix: \$${orderDish["dish"]["price"]}'),
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                      ],
+                return GestureDetector(  
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => OrderTrackingPage(orderId: order["id"]),  
+                      ),
+                    );
+                  },
+                  child: Card(
+                    margin: const EdgeInsets.all(8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Commande ID: ${order["id"]}'),
+                          Text('Salle de classe: ${order["classroom"]["name"]}'),
+                          Text('Total: \$${calculateOrderTotal(order["orderDishes"]).toStringAsFixed(2)}'),
+                          const SizedBox(height: 10),
+                          ...order["orderDishes"].map<Widget>((orderDish) {
+                            return ListTile(
+                              title: Text(orderDish["dish"]["name"]),
+                              subtitle: Text(orderDish["dish"]["description"]),
+                              trailing: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('Quantité: ${orderDish["quantity"]}'),
+                                  Text('Prix: \$${orderDish["dish"]["price"]}'),
+                                ],
+                              ),
+                            );
+                          }).toList(),
+                        ],
+                      ),
                     ),
                   ),
                 );
