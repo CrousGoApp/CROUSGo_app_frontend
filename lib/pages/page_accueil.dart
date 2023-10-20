@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:crousgo/pages/page_panier.dart';
 import 'package:crousgo/pages/page_produit.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +31,7 @@ class PageAccueilState extends State<PageAccueil>
   List<dynamic> jsonData = [];
   String? selectedCategory;
   String? searchQuery;
+  bool _hasTimeout = false;
 
 
 
@@ -36,23 +39,33 @@ class PageAccueilState extends State<PageAccueil>
   void initState() {
     super.initState();
     fetchData();
+    Timer.periodic(Duration(seconds: 10), (timer) {
+      fetchData();
+    });
   }
+
 
   Future<void> fetchData() async {
     try {
-      final response = await http.get(Uri.parse('http://10.0.2.2:8080/crousgo_app_backend/dishes'));
+      final response = await http.get(Uri.parse('http://10.0.2.2:8080/crousgo_app_backend/dishes')).timeout(Duration(seconds: 2));
       if (response.statusCode == 200) {
         setState(() {
           jsonData = json.decode(response.body);
-          print(jsonData);
+          _hasTimeout = false; // Reset the timeout flag
         });
       } else {
         throw Exception('Failed to load data');
       }
     } catch (e) {
-      // Gérez l'erreur ici, par exemple en imprimant le message d'erreur
+      if (e is TimeoutException) {
+        setState(() {
+          _hasTimeout = true;
+        });
+      }
       print('Une erreur s\'est produite : $e');
     }
+  
+
   }
 
   @override
@@ -101,6 +114,19 @@ class PageAccueilState extends State<PageAccueil>
       ),
       body: Column(
         children: <Widget>[
+          if (_hasTimeout)
+            Column(
+              children: [
+                Text("Impossible d'afficher les plats"),
+                ElevatedButton(
+                  onPressed: fetchData,
+                  child: Text("Refresh"),
+                ),
+              ],
+            )
+          else if (jsonData.isEmpty)
+            const Center(child: CircularProgressIndicator())
+          else
           jsonData.isEmpty
               ? const Center(child: CircularProgressIndicator())
               : const Padding(
