@@ -4,7 +4,6 @@ class Item {
   final int price;
   final String picturename;
   int quantity;
-
   Item({required this.id, 
         required this.name, 
         required this.price, 
@@ -13,3 +12,5 @@ class Item {
         }
   );
 }
+
+//ohhhhhhhhhhhhh
