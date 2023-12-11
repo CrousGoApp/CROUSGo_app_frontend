@@ -28,7 +28,7 @@ jobs:
 
   nodejs_build:
     needs: sonarqube_scan
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     if: success()
     strategy:
       matrix:
