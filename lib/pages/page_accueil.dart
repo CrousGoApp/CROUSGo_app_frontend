@@ -1,5 +1,6 @@
 import 'dart:async';
-
+import 'dart:io' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:crousgo/pages/page_panier.dart';
 import 'package:crousgo/pages/page_produit.dart';
 import 'package:flutter/material.dart';
@@ -33,8 +34,6 @@ class PageAccueilState extends State<PageAccueil>
   String? searchQuery;
   bool _hasTimeout = false;
 
-
-
   @override
   void initState() {
     super.initState();
@@ -44,10 +43,17 @@ class PageAccueilState extends State<PageAccueil>
     });
   }
 
-
-  Future<void> fetchData() async {
+   Future<void> fetchData() async {
+    Uri uri;
+   if (kIsWeb) {
+    // Si l'application s'exécute dans un navigateur Web
+    uri = Uri.http('localhost:8080', '/crousgo_app_backend/dishes');
+  } else {
+    // Si l'application s'exécute dans un autre environnement (par exemple, un émulateur Android)
+    uri = Uri.http('10.0.2.2:8080', '/crousgo_app_backend/dishes');
+  }
     try {
-      final response = await http.get(Uri.parse('http://10.0.2.2:8080/crousgo_app_backend/dishes')).timeout(Duration(seconds: 2));
+      final response = await http.get(uri).timeout(Duration(seconds: 10));
       if (response.statusCode == 200) {
         setState(() {
           jsonData = json.decode(response.body);
