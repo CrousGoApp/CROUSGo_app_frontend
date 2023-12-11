@@ -7,7 +7,7 @@ on:
 
 
 jobs:
-  build:
+  sonarqube_scan:
     name: Build
     runs-on: ubuntu-latest
     permissions: read-all
@@ -25,3 +25,21 @@ jobs:
       #   timeout-minutes: 5
       #   env:
       #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  nodejs_build:
+    needs: sonarqube_scan
+    runs-on: self-hosted
+    if: success()
+    strategy:
+      matrix:
+        node-version: ['20']
+    steps:
+      - name: install ssh keys
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
+      - name: connect and pull
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git switch ${{ secrets.MAIN_BRANCH }} && git pull && docker compose up --build -d && exit"
+      - name: cleanup
+        run: rm -rf ~/.ssh
