@@ -10,7 +10,7 @@ class PageAuth extends StatelessWidget {
   PageAuth({super.key});
 
   Future<void> _signIn(BuildContext context) async {
-    print("Connexion en cours...")
+    //print("Connexion en cours...")
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: _emailController.text,
